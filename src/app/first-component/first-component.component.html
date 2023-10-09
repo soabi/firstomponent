@@ -1,3 +1,13 @@
 <input type="file" (change)="onFileSelected($event)" accept=".csv" />
-<button (click)="processCSV()">Procesar CSV</button>
 
+<div *ngIf="totalAssets > 0">
+  <p>Total de Bienes sin IVA: {{ totalAssets  }}</p>
+</div>
+
+<div *ngIf="totalServices > 0">
+  <p>Total de Servicios sin IVA: {{ totalServices }}</p>
+</div>
+
+<div *ngIf="totalGasoline > 0">
+  <p>Total de Gasolina sin IVA: {{ totalGasoline }}</p>
+</div>

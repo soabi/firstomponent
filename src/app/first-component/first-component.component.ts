@@ -6,52 +6,50 @@ import { Component } from '@angular/core';
   styleUrls: ['./first-component.component.scss']
 })
 export class MiComponenteComponent {
-  csvContent: String | undefined;
+  csvContent: string | undefined;
+  totalAssets: number = 0;
+  totalServices: number = 0;
+  totalGasoline: number = 0;
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
       this.csvContent = reader.result as string;
-      console.log('Contenido del archivo CSV:', this.csvContent);
+      this.processCSV();
     };
 
     reader.readAsText(file);
-    
   }
 
   processCSV() {
-    if (!this.csvContent){
-      console.error('You dont select a CSV file');
+    if (!this.csvContent) {
+      console.error('No seleccionaste un archivo CSV');
       return;
     }
-    const lines = this.csvContent?.split('\n');
-    let bienesTotal = 0;
-    let serviciosTotal = 0;
-    let gasolinaTotal = 0;
+    const lines = this.csvContent.split('\n');
 
-    for (const line of lines){
+    for (const line of lines) {
       const columns = line.split(',');
-      if(columns.length === 3){
-        const propertName = columns[0].trim();
+
+      if (columns.length === 3) {
+        const establishmentName = columns[0].trim();
         const totalAmount = parseFloat(columns[1]);
         const invoiceType = columns[2].trim();
 
         const withoutIVA = totalAmount / 1.12;
 
-        if (invoiceType === 'bienes'){
-          bienesTotal = bienesTotal + withoutIVA;
-        }else if (invoiceType === 'servicios'){
-          serviciosTotal += withoutIVA;
-        }else if(invoiceType === 'gasolina'){
-          gasolinaTotal += withoutIVA;
+        if (establishmentName === 'Estacion de Servicio Villa Clarita') {
+          this.totalGasoline += withoutIVA;
+        } else if (establishmentName === 'Sporta') {
+        this.totalServices += withoutIVA;
+        }else if (establishmentName === 'TacoBell' || establishmentName === 'Tacolito' || establishmentName === 'Pizza Hut' ) {
+          this.totalAssets += withoutIVA;
+      
         }
-      }
+      }  
+      
     }
-    console.log('Total de bienes: ' + bienesTotal);
-    console.log('Total de servicios: ' + serviciosTotal);
-    console.log('Total de gasolina: ' + gasolinaTotal);
   }
 }
-
-    
