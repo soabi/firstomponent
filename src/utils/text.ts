@@ -1,3 +1,3 @@
-export const toCamelCase = () => {
-    
+export const toSnakeCase = () => {
+
 }
